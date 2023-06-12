@@ -1,4 +1,4 @@
-module wizard.ren/ohmynotionagent
+module github.com/chnyangjie/ohmynotionagent
 
 go 1.20
 
