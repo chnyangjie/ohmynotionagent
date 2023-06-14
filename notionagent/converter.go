@@ -96,6 +96,10 @@ func VarToProperty(variable interface{}, propertyType notionapi.PropertyType) (n
 			{
 				return newRelation(variable)
 			}
+		case notionapi.PropertyTypeNumber:
+			{
+				return newNumber(variable)
+			}
 		default:
 			{
 				log.Printf("unsupport propertyType: %+v", propertyType)
@@ -104,6 +108,12 @@ func VarToProperty(variable interface{}, propertyType notionapi.PropertyType) (n
 		}
 	}
 	return nil, fmt.Errorf("unsupport variable: %+v", variable)
+}
+func newNumber(content interface{}) (*notionapi.NumberProperty, error) {
+	if d, ok := content.(float64); ok {
+		return &notionapi.NumberProperty{Number: d}, nil
+	}
+	return nil, fmt.Errorf("unsupport content type: %+v", content)
 }
 func newRichText(content interface{}) (*notionapi.RichTextProperty, error) {
 	if d, ok := content.(string); ok {
