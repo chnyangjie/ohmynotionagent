@@ -118,6 +118,12 @@ func newNumber(content interface{}) (*notionapi.NumberProperty, error) {
 func newRichText(content interface{}) (*notionapi.RichTextProperty, error) {
 	if d, ok := content.(string); ok {
 		return &notionapi.RichTextProperty{RichText: []notionapi.RichText{{Text: &notionapi.Text{Content: d}}}}, nil
+	} else if d, ok := content.([]string); ok {
+		result := notionapi.RichTextProperty{}
+		for _, item := range d {
+			result.RichText = append(result.RichText, notionapi.RichText{Text: &notionapi.Text{Content: item}})
+		}
+		return &result, nil
 	}
 	return nil, fmt.Errorf("unsupport content type: %+v", content)
 }
