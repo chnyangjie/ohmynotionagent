@@ -29,6 +29,11 @@ func CreateNewPageWithBlockInDatabase(client *notionapi.Client, database notiona
 			delete(content, k)
 		}
 	}
+	for i, block := range blocks {
+		if block == nil {
+			blocks = append(blocks[:i], blocks[i+1:]...)
+		}
+	}
 	req := notionapi.PageCreateRequest{
 		Parent: notionapi.Parent{
 			DatabaseID: database,
