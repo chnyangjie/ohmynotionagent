@@ -24,6 +24,11 @@ func CreateNewPageInDatabase(client *notionapi.Client, database notionapi.Databa
 }
 
 func CreateNewPageWithBlockInDatabase(client *notionapi.Client, database notionapi.DatabaseID, content map[string]notionapi.Property, blocks []notionapi.Block) (*notionapi.Page, error) {
+	for k, v := range content {
+		if v == nil {
+			delete(content, k)
+		}
+	}
 	req := notionapi.PageCreateRequest{
 		Parent: notionapi.Parent{
 			DatabaseID: database,
