@@ -17,6 +17,9 @@ func newNumber(content interface{}) (*notionapi.NumberProperty, error) {
 func genRichTextObj(content []string) []notionapi.RichText {
 	result := []notionapi.RichText{}
 	for _, item := range content {
+		if item == "" {
+			continue
+		}
 		r := []rune(item)
 		start := 0
 		for start < len(r) {
@@ -42,7 +45,10 @@ func newRichText(content interface{}) (*notionapi.RichTextProperty, error) {
 		raw = append(raw, d...)
 	}
 	result.RichText = append(result.RichText, genRichTextObj(raw)...)
-	return &result, fmt.Errorf("unsupport content type: %+v", content)
+	if len(result.RichText) == 0 {
+		return nil, fmt.Errorf("unsupport content type: %+v", content)
+	}
+	return &result, nil
 }
 
 func newRelation(content interface{}) (*notionapi.RelationProperty, error) {
