@@ -129,6 +129,42 @@ func newImage(content interface{}) ([]notionapi.Block, error) {
 		}, nil
 	}
 }
+func newQuote(content interface{}) ([]notionapi.Block, error) {
+	result := []notionapi.QuoteBlock{
+		{
+			BasicBlock: notionapi.BasicBlock{
+				Type:   notionapi.BlockQuote,
+				Object: notionapi.ObjectTypeBlock,
+			},
+		},
+	}
+	raw := []string{}
+	if d, ok := content.(string); ok {
+		raw = append(raw, d)
+	} else if d, ok := content.([]string); ok {
+		raw = append(raw, d...)
+	}
+	count := 0
+	raws := genRichTextObj(raw)
+	for _, item := range raws {
+		count += 1
+		if count > 100 {
+			result = append(result, notionapi.QuoteBlock{
+				BasicBlock: notionapi.BasicBlock{
+					Type:   notionapi.BlockTypeParagraph,
+					Object: notionapi.ObjectTypeBlock,
+				},
+			})
+			count = 1
+		}
+		result[len(result)-1].Quote.RichText = append(result[len(result)-1].Quote.RichText, item)
+	}
+	r := []notionapi.Block{}
+	for _, item := range result {
+		r = append(r, notionapi.Block(item))
+	}
+	return r, nil
+}
 func newParagraph(content interface{}) ([]notionapi.Block, error) {
 	result := []notionapi.ParagraphBlock{
 		{
