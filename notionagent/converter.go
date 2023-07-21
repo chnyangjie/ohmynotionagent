@@ -82,6 +82,10 @@ func VarToBlock(variable interface{}, blockType notionapi.BlockType) ([]notionap
 		{
 			return newImage(variable)
 		}
+	case notionapi.BlockTypeTableBlock:
+		{
+			return newTableBlock(variable)
+		}
 	}
 	return nil, fmt.Errorf("unsupport variable: %+v", variable)
 }
