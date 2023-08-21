@@ -129,6 +129,10 @@ func VarToProperty(variable interface{}, propertyType notionapi.PropertyType) (n
 			{
 				return newNumber(variable)
 			}
+		case notionapi.PropertyTypeCheckbox:
+			{
+				return newCheckbox(variable)
+			}
 		default:
 			{
 				log.Printf("unsupport propertyType: %+v", propertyType)

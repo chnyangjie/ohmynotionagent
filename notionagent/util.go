@@ -14,6 +14,12 @@ func newNumber(content interface{}) (*notionapi.NumberProperty, error) {
 	}
 	return nil, fmt.Errorf("unsupport content type: %+v", content)
 }
+func newCheckbox(content interface{}) (*notionapi.CheckboxProperty, error) {
+	if d, ok := content.(bool); ok {
+		return &notionapi.CheckboxProperty{Checkbox: d}, nil
+	}
+	return nil, fmt.Errorf("unsupport content type: %+v", content)
+}
 func genRichTextObj(content []string) []notionapi.RichText {
 	result := []notionapi.RichText{}
 	for _, item := range content {
